@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTaskRequest;
 use Illuminate\Http\Request;
 use App\Enums\ResponseType;
 use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -59,7 +60,6 @@ class TaskController extends Controller
 
         } catch (\Throwable $throwable) {
 
-
             return ResponseType::ERROR->response();
 
         }
@@ -104,6 +104,7 @@ class TaskController extends Controller
     public function upsert(Request $request)
     {
         $data = json_decode($request->input('data'));
+        DB::beginTransaction();
         try {
 
             foreach ($data as $key => $task)
@@ -113,10 +114,12 @@ class TaskController extends Controller
                 $model->update(['priority' => $key + 1]);
             }
 
+            DB::commit();
             return ResponseType::SUCCESS->response();
 
         } catch (\Throwable $throwable) {
 
+            DB::rollBack();
             return ResponseType::ERROR->response();
         }
     }
