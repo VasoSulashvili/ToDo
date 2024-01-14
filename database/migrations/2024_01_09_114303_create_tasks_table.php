@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects');
+            $table->unique(['project_id', 'name']);
         });
     }
 

@@ -1,5 +1,4 @@
 const csrf_token = document.querySelector('meta[name="csrf-token"]').content;
-const baseUrl = 'http://localhost/api/';
-
+const baseUrl = document.querySelector('meta[name="base-url"]').content + '/api/';
 
 export { csrf_token, baseUrl };

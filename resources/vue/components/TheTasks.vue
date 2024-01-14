@@ -96,10 +96,8 @@ export default {
                 .then(response => response.json(),)
                 .then(data => {
                     if(data.type === 'validation') {
-                        console.log(data.data)
                         that.errors = data.data
                     } else {
-                        console.log(data.data)
                         that.fetchTasks(that.selectedProject)
                         that.triggerAlert(data.type, data.message)
                         that.errors = [];

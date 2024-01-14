@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -24,7 +25,12 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:2']
+            'name' => [
+                'required',
+                'min:2',
+                Rule::unique('tasks', 'name')
+                    ->where('project_id', $this->input('project_id')),
+                ],
         ];
     }
 

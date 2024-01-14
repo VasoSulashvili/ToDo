@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+use Closure;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -25,7 +27,12 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'project_id' => 'required|integer',
-            'name' => 'required|min:2'
+            'name' => [
+                'required',
+                'min:2',
+                Rule::unique('tasks', 'name')
+                    ->where('project_id', $this->input('project_id')),
+                ]
         ];
     }
 
